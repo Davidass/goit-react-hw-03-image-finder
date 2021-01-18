@@ -9,7 +9,7 @@ class LoaderView extends Component {
     return (
       <Loader
         className={s.loader}
-        type="Rings"
+        type="ThreeDots"
         color="#00BFFF"
         height={80}
         width={80}
