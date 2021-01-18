@@ -1,6 +1,6 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import s from 'components/ImageGalleryItem/ImageGalleryItem.module.css';
+import s from 'components/ImageGallery/ImageGalleryItem.module.css';
 import Modal from 'components/Modal';
 
 class ImageGalleryItem extends Component {
@@ -15,8 +15,8 @@ class ImageGalleryItem extends Component {
   };
 
   render() {
-    const { showModal } = this.state;
     const { src, alt, largeImageURL } = this.props;
+    const { showModal } = this.state;
 
     return (
       <li className={s.ImageGalleryItem}>
@@ -37,7 +37,7 @@ class ImageGalleryItem extends Component {
 ImageGalleryItem.propTypes = {
   src: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
-  largeImageURL: PropTypes.func.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
 };
 
 export default ImageGalleryItem;

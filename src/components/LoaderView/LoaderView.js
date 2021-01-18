@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import s from 'components/LoaderView/LoaderView.module';
+import s from 'components/LoaderView/LoaderView.module.css';
 
 class LoaderView extends Component {
   //other logic

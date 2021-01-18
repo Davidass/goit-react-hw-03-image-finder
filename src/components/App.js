@@ -2,26 +2,24 @@ import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 import ImagesInfo from 'components/ImagesInfo';
 import Container from 'components/Container';
-
-import './App.css';
 import Searchbar from './Searchbar';
 
 class App extends Component {
   state = {
-    imageName: [],
+    imageName: '',
   };
 
-  handelSearhSubmit = imageName => {
+  handelFormSubmit = imageName => {
     this.setState({ imageName });
   };
 
   render() {
     return (
       <Container>
-        <ToastContainer autoClose={3000} />
-        <Searchbar onSubmit={this.handelSearhSubmit} />
+        <Searchbar onSubmit={this.handelFormSubmit} />
 
         <ImagesInfo imageName={this.state.imageName} />
+        <ToastContainer autoClose={3000} />
       </Container>
     );
   }
