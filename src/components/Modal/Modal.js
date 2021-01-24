@@ -13,11 +13,7 @@ class Modal extends Component {
 
   componentWillUnmount() {
     console.log('Modal componentWillUnmount');
-    window.removeEventListener(
-      'keydown',
-      this.handleKeyDown,
-      this.handleBackdropClick,
-    );
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
 
   handleKeyDown = event => {
