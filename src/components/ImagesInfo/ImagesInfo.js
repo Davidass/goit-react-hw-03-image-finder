@@ -19,6 +19,8 @@ export default class ImagesInfo extends Component {
     page: 1,
     error: null,
     status: 'idle',
+    arePicturesOver: false,
+    totalHits: 0,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -52,8 +54,16 @@ export default class ImagesInfo extends Component {
         if (newImages.total !== 0) {
           this.setState(prevState => ({
             images: [...prevState.images, ...newImages.hits],
+            totalHits:
+              prevState.totalHits > 0
+                ? prevState.totalHits
+                : Math.ceil(newImages.totalHits / 12),
             status: Status.RESOLVED,
           }));
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth',
+          });
         }
 
         return Promise.reject(new Error('Invalid request'));
@@ -61,8 +71,9 @@ export default class ImagesInfo extends Component {
       .catch(error => this.setState({ error, status: Status.REJECTED }));
   };
 
-  onClickLoadMore = () => {
+  onLoadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
+    this.setState({ arePicturesOver: true });
   };
 
   render() {
@@ -72,21 +83,23 @@ export default class ImagesInfo extends Component {
       return <p>Please enter a value for search images</p>;
     }
 
-    if (status === 'pending') {
-      return <LoaderView />;
-    }
-
     if (status === 'rejected') {
       return <ImagesErrorView message={error.message} />;
     }
 
-    if (status === 'resolved') {
+    if (status === 'resolved' || status === 'pending') {
       return (
         <>
           <ImageGallery images={this.state.images} />
-          <Button onClick={this.onClickLoadMore} page={this.state.page} />
+
+          {this.state.RESOLVED && (
+            <Button onClick={this.onLoadMore} page={this.state.page} />
+          )}
         </>
       );
+    }
+    if (status === 'pending') {
+      return <LoaderView />;
     }
   }
 }
