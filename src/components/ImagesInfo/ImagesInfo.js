@@ -35,33 +35,32 @@ export default class ImagesInfo extends Component {
         status: Status.IDLE,
       });
 
-      // eslint-disable-next-line no-undef
-      fetchImage(1);
+      this.fetchImage(1);
     }
     if (prevPage !== nextPage && nextPage !== 1) {
-      // eslint-disable-next-line no-undef
-      fetchImage(nextPage);
+      this.fetchImage(nextPage);
     }
-    // eslint-disable-next-line no-undef
-    fetchImage = page => {
-      const { imageName } = this.props;
-      this.setState({ status: Status.PENDING });
-
-      pixabayAPI
-        .fetchPixabay(imageName, page)
-        .then(newImages => {
-          if (newImages.total !== 0) {
-            this.setState(prevState => ({
-              images: [...prevState.images, ...newImages.hits],
-              status: Status.RESOLVED,
-            }));
-          }
-
-          return Promise.reject(new Error('Invalid request'));
-        })
-        .catch(error => this.setState({ error, status: Status.REJECTED }));
-    };
   }
+
+  fetchImage = page => {
+    const { imageName } = this.props;
+    this.setState({ status: Status.PENDING });
+
+    pixabayAPI
+      .fetchPixabay(imageName, page)
+      .then(newImages => {
+        if (newImages.total !== 0) {
+          this.setState(prevState => ({
+            images: [...prevState.images, ...newImages.hits],
+            status: Status.RESOLVED,
+          }));
+        }
+
+        return Promise.reject(new Error('Invalid request'));
+      })
+      .catch(error => this.setState({ error, status: Status.REJECTED }));
+  };
+
   onClickLoadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
