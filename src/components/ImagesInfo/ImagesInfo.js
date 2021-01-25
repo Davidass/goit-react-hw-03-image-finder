@@ -54,13 +54,14 @@ export default class ImagesInfo extends Component {
         if (newImages.total !== 0) {
           this.setState(prevState => ({
             images: [...prevState.images, ...newImages.hits],
-            totalHits:
-              prevState.totalHits > 0
-                ? prevState.totalHits
-                : Math.ceil(newImages.totalHits / 12),
+            arePicturesOver: newImages.totalHits - page * 12 <= 0,
+            // totalHits:
+            //   prevState.totalHits > 0
+            //     ? prevState.totalHits
+            //     : Math.ceil(newImages.totalHits / 12),
             status: Status.RESOLVED,
           }));
-          window.scrollTo({
+          return window.scrollTo({
             top: document.documentElement.scrollHeight,
             behavior: 'smooth',
           });
@@ -73,33 +74,31 @@ export default class ImagesInfo extends Component {
 
   onLoadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
-    this.setState({ arePicturesOver: true });
   };
 
   render() {
-    const { error, status } = this.state;
+    const { error, status, arePicturesOver, image } = this.state;
 
-    if (status === 'idle') {
+    if (status === Status.IDLE) {
       return <p>Please enter a value for search images</p>;
     }
 
-    if (status === 'rejected') {
+    if (status === Status.REJECTED) {
       return <ImagesErrorView message={error.message} />;
     }
 
-    if (status === 'resolved' || status === 'pending') {
+    if (status === Status.RESOLVED || status === Status.PENDING) {
       return (
         <>
           <ImageGallery images={this.state.images} />
 
-          {this.state.RESOLVED && (
-            <Button onClick={this.onLoadMore} page={this.state.page} />
+          {status === Status.RESOLVED && !arePicturesOver && (
+            <Button onClick={this.onLoadMore} />
           )}
+          {status === Status.REJECTED && <LoaderView />}
+          {status === Status.PENDING && <LoaderView />}
         </>
       );
-    }
-    if (status === 'pending') {
-      return <LoaderView />;
     }
   }
 }
