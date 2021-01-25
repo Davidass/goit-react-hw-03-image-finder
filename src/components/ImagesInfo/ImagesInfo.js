@@ -77,7 +77,7 @@ export default class ImagesInfo extends Component {
   };
 
   render() {
-    const { error, status, arePicturesOver, image } = this.state;
+    const { error, status, arePicturesOver, images } = this.state;
 
     if (status === Status.IDLE) {
       return <p>Please enter a value for search images</p>;
@@ -93,7 +93,7 @@ export default class ImagesInfo extends Component {
           <ImageGallery images={this.state.images} />
 
           {status === Status.RESOLVED && !arePicturesOver && (
-            <Button onClick={this.onLoadMore} />
+            <Button onLoadMore={this.onLoadMore} />
           )}
           {status === Status.REJECTED && <LoaderView />}
           {status === Status.PENDING && <LoaderView />}
