@@ -90,12 +90,11 @@ export default class ImagesInfo extends Component {
     if (status === Status.RESOLVED || status === Status.PENDING) {
       return (
         <>
-          <ImageGallery images={this.state.images} />
+          <ImageGallery images={images} />
 
           {status === Status.RESOLVED && !arePicturesOver && (
             <Button onLoadMore={this.onLoadMore} />
           )}
-          {status === Status.REJECTED && <LoaderView />}
           {status === Status.PENDING && <LoaderView />}
         </>
       );
